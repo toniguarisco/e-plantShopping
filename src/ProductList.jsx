@@ -256,8 +256,18 @@ function ProductList({ onHomeClick }) {
         setShowCart(false);
     };
 
+    const toggleButtonState = () => {
+        setIsActive(!isActive); // Toggle the disabled state
+        setButtonText('Added to Cart');
+    };
+
     const handleAddToCart = (product) => {
         console.log(product);
+
+        if(!isActive){
+            toggleButtonState(isActive);
+        }
+        
         dispatch(addItem(product));
         setAddedToCart((prevState) => ({
             ...prevState,
@@ -266,6 +276,9 @@ function ProductList({ onHomeClick }) {
     }
 
     const [addedToCart, setAddedToCart] = useState({});
+    const [buttonText, setButtonText] = useState('Add to Cart');
+    const [isActive, setIsActive] = useState(false);
+    
     const dispatch = useDispatch();
 
     return (
@@ -305,7 +318,12 @@ function ProductList({ onHomeClick }) {
                                         <div className='product-price'>
                                             Cost: ${plant.cost}
                                         </div>
-                                        <button className='product-button' onClick={() => handleAddToCart(plant)}>Add to Cart</button>
+                                        <button 
+                                            key={index}
+                                            className={ !isActive ? 'product-button' : 'product-button added-to-cart'} 
+                                            onClick={() => handleAddToCart(plant)}>{buttonText}
+                                        </button>
+                                        
                                     </div>
                                 ))}
                             </div>
