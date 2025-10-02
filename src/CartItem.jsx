@@ -4,33 +4,50 @@ import { removeItem, updateQuantity } from './CartSlice';
 import './CartItem.css';
 
 const CartItem = ({ onContinueShopping }) => {
-  const cart = useSelector(state => state.cart.items);
-  const dispatch = useDispatch();
+    const cart = useSelector(state => state.cart.items);
+    const dispatch = useDispatch();
 
-  // Calculate total amount for all products in the cart
-  const calculateTotalAmount = () => {
- 
-  };
+    // Calculate total amount for all products in the cart
+    const calculateTotalAmount = () => {
+        let totalCost = 0;
+        console.log('cart', cart);
+        if (cart){
+            cart.forEach(element => {
+                totalCost += parseFloat(element.cost) * element.quantity;
+            });
+        }
+        console.log('totalCost', totalCost);
+        return totalCost;
+    };
 
-  const handleContinueShopping = (e) => {
-   
-  };
+    const handleContinueShopping = (e) => {
+        onContinueShopping(e);
+    };
 
+    const handleCheckoutShopping = (e) => {
+        alert('Functionality to be added for future reference');
+    };
 
+    const handleIncrement = (item) => {
+        dispatch(updateQuantity({ name: item.name, quantity: item.quantity + 1 }));
+    };
 
-  const handleIncrement = (item) => {
-  };
+    const handleDecrement = (item) => {
+        if(item.quantity > 0){
+            dispatch(updateQuantity({ name: item.name, quantity: item.quantity - 1 }));
+        }else {
+            handleRemove(item);
+        }
+    };
 
-  const handleDecrement = (item) => {
-   
-  };
+    const handleRemove = (item) => {
+        console.log('it will be removed');
+        // dispatch(removeItem(item));
+    };
 
-  const handleRemove = (item) => {
-  };
-
-  // Calculate total cost based on quantity for an item
-  const calculateTotalCost = (item) => {
-  };
+    // Calculate total cost based on quantity for an item
+    const calculateTotalCost = (item) => {
+    };
 
   return (
     <div className="cart-container">
@@ -57,12 +74,10 @@ const CartItem = ({ onContinueShopping }) => {
       <div className="continue_shopping_btn">
         <button className="get-started-button" onClick={(e) => handleContinueShopping(e)}>Continue Shopping</button>
         <br />
-        <button className="get-started-button1">Checkout</button>
+        <button className="get-started-button1" onClick={(e) => handleCheckoutShopping(e)}>Checkout</button>
       </div>
     </div>
   );
 };
 
 export default CartItem;
-
-
